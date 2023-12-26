@@ -12,7 +12,7 @@ class FifteenPuzzle(GridLayout):
         shuffle(self.tiles)
         
         for tile in self.tiles:
-            button = Button(text=tile)
+            button = Button(text=tile,font_size=30)
             self.add_widget(button)
 
 
