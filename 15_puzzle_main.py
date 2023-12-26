@@ -6,7 +6,9 @@ from kivy.uix.button import Button
 class FifteenPuzzle(GridLayout):
     def __init__(self, **kwargs):
         super(FifteenPuzzle, self).__init__(**kwargs)
-        self.cols = 4  
+        self.cols = 4
+        self.spacing = 5
+
         
         for i in range(15):
             button = Button(text = f'{i + 1}')
