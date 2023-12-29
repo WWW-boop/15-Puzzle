@@ -2,6 +2,8 @@ from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+
 from kivy.clock import Clock
 
 from random import shuffle
@@ -32,6 +34,9 @@ class FifteenPuzzle(BoxLayout):
             button = Button(text=tile, font_size=30, on_press=self.tile_click)
             self.game_layout.add_widget(button)
 
+    def is_solved(self):
+        return self.tiles == [str(i) for i in range(1, 16)] + ['']
+
     def tile_click(self, instance):
         if not self.game_running:
             self.game_running = True
@@ -44,6 +49,12 @@ class FifteenPuzzle(BoxLayout):
         if self.is_adjacent(current_index, empty_index):
             self.tiles[current_index], self.tiles[empty_index] = self.tiles[empty_index], self.tiles[current_index]
             self.update_buttons()
+
+            if self.is_solved():
+                self.game_running = False
+                Clock.unschedule(self.update_timer)
+                self.timer_label.text = "Congratulations! Puzzle Solved!"
+
 
     def is_adjacent(self, index1, index2):
         row1, col1 = divmod(index1, 4)
@@ -61,6 +72,8 @@ class FifteenPuzzle(BoxLayout):
         minutes = self.elapsed_time // 60
         seconds = self.elapsed_time % 60
         self.timer_label.text = f"Time: {minutes:02}:{seconds:02}"
+
+    
 
 class FifteenPuzzleApp(App): 
     def build(self):
