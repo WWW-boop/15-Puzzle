@@ -5,13 +5,18 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 
 from kivy.clock import Clock
-
+from kivy.graphics import Color, Rectangle
 from random import shuffle
 
 class FifteenPuzzle(BoxLayout):
     def __init__(self, **kwargs):
         super(FifteenPuzzle, self).__init__(**kwargs)
         self.orientation = 'vertical'  
+
+        with self.canvas.before:
+            Color(255, 255, 255, 1)  
+            self.rect = Rectangle(size=self.size, pos=self.pos)
+            self.bind(size=self.update_rect, pos=self.update_rect)
 
         self.game_layout = GridLayout(cols=4, spacing=5)
         self.add_widget(self.game_layout)
@@ -73,6 +78,9 @@ class FifteenPuzzle(BoxLayout):
         seconds = self.elapsed_time % 60
         self.timer_label.text = f"Time: {minutes:02}:{seconds:02}"
 
+    def update_rect(self, instance, value):
+        self.rect.size = instance.size
+        self.rect.pos = instance.pos
     
 
 class FifteenPuzzleApp(App): 
