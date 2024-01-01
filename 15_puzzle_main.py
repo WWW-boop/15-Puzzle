@@ -41,8 +41,9 @@ class FifteenPuzzle(BoxLayout):
         self.timer_layout.add_widget(reset_button)
 
         self.music_sound = SoundLoader.load('sound\music_sound.wav')
+        self.win_sound = SoundLoader.load('sound\win_sound.wav')
         self.play_music_sound()
-
+        
     def create_board(self):
         for tile in self.tiles:
             button = Button(text=tile, font_size=30, on_press=self.tile_click)
@@ -92,6 +93,13 @@ class FifteenPuzzle(BoxLayout):
         if self.check_win():
             Clock.unschedule(self.update_timer)
             self.game_running = False
+            self.play_win_sound()
+
+    def play_win_sound(self):
+        if self.win_sound:
+            if self.music_sound and self.music_sound.state == 'play':
+                self.music_sound.stop()
+            self.win_sound.play()
 
     def play_music_sound(self):
         if self.music_sound:
