@@ -56,10 +56,13 @@ class FifteenPuzzle(BoxLayout):
             self.tiles[current_index], self.tiles[empty_index] = self.tiles[empty_index], self.tiles[current_index]
             self.animate_tile_move(instance, current_index, empty_index)
 
-            if self.is_solved():
-                self.game_running = False
-                Clock.unschedule(self.update_timer)
-                self.timer_label.text = "Congratulations! Puzzle Solved!"
+        if self.is_solved():
+            self.game_running = False
+            Clock.unschedule(self.update_timer)
+            minutes = self.elapsed_time // 60
+            seconds = self.elapsed_time % 60
+            congratulations_message = f"Congratulations! Puzzle Solved in {minutes:02}:{seconds:02}"
+            self.timer_label.text = congratulations_message
 
     def animate_tile_move(self, instance, from_index, to_index):
         row_from, col_from = divmod(from_index, 4)
@@ -105,7 +108,6 @@ class FifteenPuzzle(BoxLayout):
         self.rect.size = instance.size
         self.rect.pos = instance.pos
     
-
 class FifteenPuzzleApp(App): 
     def build(self):
         return FifteenPuzzle()
