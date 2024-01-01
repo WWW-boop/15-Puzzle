@@ -7,7 +7,9 @@ from kivy.uix.label import Label
 from kivy.clock import Clock
 from kivy.graphics import Color, Rectangle
 from kivy.animation import Animation
+from kivy.core.audio import SoundLoader
 from random import shuffle
+
 
 class FifteenPuzzle(BoxLayout):
     def __init__(self, **kwargs):
@@ -38,10 +40,14 @@ class FifteenPuzzle(BoxLayout):
         reset_button = Button(text='Reset', on_press=self.reset_puzzle)
         self.timer_layout.add_widget(reset_button)
 
+        self.music_sound = SoundLoader.load('sound\music_sound.wav')
+        self.play_music_sound()
+
     def create_board(self):
         for tile in self.tiles:
             button = Button(text=tile, font_size=30, on_press=self.tile_click)
             self.game_layout.add_widget(button)
+           
 
     def is_solved(self):
         return self.tiles == [str(i) for i in range(1, 16)] + ['']
@@ -79,12 +85,18 @@ class FifteenPuzzle(BoxLayout):
         anim = Animation(pos=target_pos, duration=0.2)
         anim.start(instance)
         anim.bind(on_complete=lambda _, __: self.on_animation_complete())
+        
 
     def on_animation_complete(self):
         self.update_buttons()
         if self.check_win():
             Clock.unschedule(self.update_timer)
             self.game_running = False
+
+    def play_music_sound(self):
+        if self.music_sound:
+            self.music_sound.play()
+
 
     def check_win(self):
         return self.tiles == [str(i) for i in range(1, 16)] + ['']
