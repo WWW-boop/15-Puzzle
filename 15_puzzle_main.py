@@ -35,6 +35,9 @@ class FifteenPuzzle(BoxLayout):
         self.elapsed_time = 0
         self.game_running = False
 
+        reset_button = Button(text='Reset', on_press=self.reset_puzzle)
+        self.timer_layout.add_widget(reset_button)
+
     def create_board(self):
         for tile in self.tiles:
             button = Button(text=tile, font_size=30, on_press=self.tile_click)
@@ -71,8 +74,7 @@ class FifteenPuzzle(BoxLayout):
         cell_size = instance.width, instance.height
         target_pos = (
             col_to * cell_size[0] + self.game_layout.x,
-            (3 - row_to) * cell_size[1] + self.game_layout.y,
-        )
+            (3 - row_to) * cell_size[1] + self.game_layout.y,)
 
         anim = Animation(pos=target_pos, duration=0.2)
         anim.start(instance)
@@ -107,6 +109,15 @@ class FifteenPuzzle(BoxLayout):
     def update_rect(self, instance, value):
         self.rect.size = instance.size
         self.rect.pos = instance.pos
+
+    def reset_puzzle(self, instance):
+        self.tiles = [str(i) for i in range(1, 16)] + ['']
+        shuffle(self.tiles)
+        self.game_layout.clear_widgets()
+        self.create_board()
+        self.game_running = False
+        Clock.unschedule(self.update_timer)
+        self.timer_label.text = "Time: 00:00"
     
 class FifteenPuzzleApp(App): 
     def build(self):
