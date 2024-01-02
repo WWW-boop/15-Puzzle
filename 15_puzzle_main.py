@@ -10,6 +10,13 @@ from kivy.animation import Animation
 from kivy.core.audio import SoundLoader
 from random import shuffle
 
+from kivy.uix.popup import Popup
+from kivy.uix.button import ButtonBehavior
+from kivy.uix.image import Image
+
+class SettingsButton(ButtonBehavior, Image):
+    pass
+
 
 class FifteenPuzzle(BoxLayout):
     def __init__(self, **kwargs):
@@ -43,6 +50,18 @@ class FifteenPuzzle(BoxLayout):
         self.music_sound = SoundLoader.load('sound\music_sound.wav')
         self.win_sound = SoundLoader.load('sound\win_sound.wav')
         self.play_music_sound()
+
+        settings_button = SettingsButton(source='15-Puzzle\image\settings_icon.png', on_press=self.show_settings_popup,size_hint=(0.1, 1))
+        self.timer_layout.add_widget(settings_button)
+
+    def show_settings_popup(self, instance):
+        content = BoxLayout(orientation='vertical')
+        content.add_widget(Label(text='Settings'))
+        content.add_widget(Button(text='Option 1'))
+        content.add_widget(Button(text='Option 2'))
+
+        popup = Popup(title='Settings', content=content, size_hint=(None, None), size=(400, 400))
+        popup.open()
         
     def create_board(self):
         for tile in self.tiles:
@@ -138,6 +157,7 @@ class FifteenPuzzle(BoxLayout):
         self.game_running = False
         Clock.unschedule(self.update_timer)
         self.timer_label.text = "Time: 00:00"
+
     
 class FifteenPuzzleApp(App): 
     def build(self):
