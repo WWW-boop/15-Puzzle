@@ -13,12 +13,26 @@ from random import shuffle
 from kivy.uix.popup import Popup
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
+from kivy.uix.slider import Slider
 
 class SettingsButton(ButtonBehavior, Image):
     pass
 
 
 class FifteenPuzzle(BoxLayout):
+
+    def show_help_popup(self, instance):
+        content = BoxLayout(orientation='vertical')
+        how_to_play_label = Label(text='How to Play', font_size=24)
+        content.add_widget(how_to_play_label)
+        content.add_widget(Label(text='1. Click on a tile adjacent to the empty space to move it.'))
+        content.add_widget(Label(text='2. Try to arrange the numbers in ascending order.'))
+        content.add_widget(Label(text='3. Click the "Reset" button to start a new game.'))
+        content.add_widget(Label(text='4. Have fun!'))
+
+        popup = Popup(title='Help / Instructions', content=content, size_hint=(None, None), size=(700, 500))
+        popup.open()
+
     def __init__(self, **kwargs):
         super(FifteenPuzzle, self).__init__(**kwargs)
         self.orientation = 'vertical'  
@@ -51,15 +65,18 @@ class FifteenPuzzle(BoxLayout):
         self.win_sound = SoundLoader.load('sound\win_sound.wav')
         self.play_music_sound()
 
-        settings_button = SettingsButton(source='15-Puzzle\image\settings_icon.png', on_press=self.show_settings_popup,size_hint=(0.1, 1))
+        
+        settings_button = SettingsButton(source='game101\image\settings_icon.png', on_press=self.show_settings_popup,size_hint=(0.1, 1))
         self.timer_layout.add_widget(settings_button)
+
+        help_button = Button(text='Help', on_press=self.show_help_popup, size_hint=(0.1, 1))
+        self.timer_layout.add_widget(help_button)
 
     def show_settings_popup(self, instance):
         content = BoxLayout(orientation='vertical')
         content.add_widget(Label(text='Settings'))
         content.add_widget(Button(text='Option 1'))
         content.add_widget(Button(text='Option 2'))
-
         popup = Popup(title='Settings', content=content, size_hint=(None, None), size=(400, 400))
         popup.open()
         
@@ -158,6 +175,25 @@ class FifteenPuzzle(BoxLayout):
         Clock.unschedule(self.update_timer)
         self.timer_label.text = "Time: 00:00"
 
+    def show_settings_popup(self, instance):
+        content = BoxLayout(orientation='vertical')
+        content.add_widget(Label(text='Settings'))
+        content.add_widget(Button(text='Option 1'))
+        content.add_widget(Button(text='Option 2'))
+
+        volume_label = Label(text='Volume')
+        content.add_widget(volume_label)
+
+        volume_slider = Slider(min=0, max=1, value=self.music_sound.volume)
+        volume_slider.bind(value=self.update_volume)
+        content.add_widget(volume_slider)
+
+        popup = Popup(title='Settings', content=content, size_hint=(None, None), size=(400, 400))
+        popup.open()
+
+    def update_volume(self, instance, value):
+        self.music_sound.volume = value
+        self.win_sound.volume = value
     
 class FifteenPuzzleApp(App): 
     def build(self):
@@ -165,3 +201,4 @@ class FifteenPuzzleApp(App):
 
 if __name__ == '__main__':
     FifteenPuzzleApp().run()
+
