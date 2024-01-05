@@ -66,11 +66,13 @@ class FifteenPuzzle(BoxLayout):
         self.play_music_sound()
 
         
-        settings_button = SettingsButton(source='game101\image\settings_icon.png', on_press=self.show_settings_popup,size_hint=(0.1, 1))
+        settings_button = SettingsButton(source='image\settings_icon.png', on_press=self.show_settings_popup,size_hint=(0.1, 1))
         self.timer_layout.add_widget(settings_button)
 
         help_button = Button(text='Help', on_press=self.show_help_popup, size_hint=(0.1, 1))
         self.timer_layout.add_widget(help_button)
+
+        self.button_click_count = 0
 
     def show_settings_popup(self, instance):
         content = BoxLayout(orientation='vertical')
@@ -96,6 +98,8 @@ class FifteenPuzzle(BoxLayout):
             self.elapsed_time = 0
             Clock.schedule_interval(self.update_timer, 1)
 
+        self.button_click_count += 1
+
         current_index = self.tiles.index(instance.text)
         empty_index = self.tiles.index('')
         if self.is_adjacent(current_index, empty_index):
@@ -109,6 +113,7 @@ class FifteenPuzzle(BoxLayout):
             seconds = self.elapsed_time % 60
             congratulations_message = f"Congratulations! Puzzle Solved in {minutes:02}:{seconds:02}"
             self.timer_label.text = congratulations_message
+            self.timer_label.text += f"\nButton Clicks: {self.button_click_count}"
 
     def animate_tile_move(self, instance, from_index, to_index):
         row_from, col_from = divmod(from_index, 4)
@@ -174,6 +179,7 @@ class FifteenPuzzle(BoxLayout):
         self.game_running = False
         Clock.unschedule(self.update_timer)
         self.timer_label.text = "Time: 00:00"
+        self.button_click_count = 0
 
     def show_settings_popup(self, instance):
         content = BoxLayout(orientation='vertical')
@@ -195,10 +201,12 @@ class FifteenPuzzle(BoxLayout):
         self.music_sound.volume = value
         self.win_sound.volume = value
     
+    
+
+    
 class FifteenPuzzleApp(App): 
     def build(self):
         return FifteenPuzzle()
 
 if __name__ == '__main__':
     FifteenPuzzleApp().run()
-
