@@ -18,7 +18,7 @@ from kivy.uix.slider import Slider
 class SettingsButton(ButtonBehavior, Image):
     pass
 
-class FifteenPuzzle(BoxLayout, Image):
+class FifteenPuzzle(BoxLayout,):
 
     def __init__(self, **kwargs):
         super(FifteenPuzzle, self).__init__(**kwargs)
@@ -54,8 +54,7 @@ class FifteenPuzzle(BoxLayout, Image):
         self.win_sound.volume = 0.4
         self.play_music_sound()
 
-
-        settings_button = SettingsButton(source='game101\image\settings_icon.png', on_press=self.show_settings_popup,size_hint=(0.1, 1))
+        settings_button = SettingsButton(source='image\settings_icon.png', on_press=self.show_settings_popup,size_hint=(0.1, 1))
         self.timer_layout.add_widget(settings_button)
 
         help_button = Button(text='Help', on_press=self.show_help_popup, size_hint=(0.1, 1))
@@ -99,6 +98,10 @@ class FifteenPuzzle(BoxLayout, Image):
         for tile in self.tiles:
             button = Button(text=tile, font_size=30, on_press=self.tile_click)
             self.game_layout.add_widget(button)
+    def create_board(self):
+        for tile in self.tiles:
+            button = Button(text=tile, font_size=30, on_press=self.tile_click)
+            self.game_layout.add_widget(button)
            
 
     def is_solved(self):
@@ -111,6 +114,7 @@ class FifteenPuzzle(BoxLayout, Image):
             self.elapsed_time = 0
             Clock.schedule_interval(self.update_timer, 1)
 
+        self.play_click_sound() 
         self.button_click_count += 1
 
         current_index = self.tiles.index(instance.text)
@@ -157,6 +161,12 @@ class FifteenPuzzle(BoxLayout, Image):
     def play_music_sound(self):
         if self.music_sound:
             self.music_sound.play()
+
+    def play_click_sound(self):
+        click_sound = SoundLoader.load('sound\press_sound.wav')
+        click_sound.volume = 0.5
+        if click_sound:
+            click_sound.play()
 
     def check_win(self):
         return self.tiles == [str(i) for i in range(1, 16)] + ['']
@@ -222,6 +232,19 @@ class FifteenPuzzle(BoxLayout, Image):
                 Clock.schedule_interval(self.update_timer, 1)
                 self.pause_resume_button.text = 'Pause'
 
+    def toggle_sound_effects(self, instance):
+        if instance.state == 'down':
+            self.music_sound.play()
+            self.win_sound.play()
+        else:
+            self.music_sound.stop()
+            self.win_sound.stop()
+
+    def update_music_volume(self, instance, value):
+        self.music_sound.volume = value
+
+    def update_win_sound_volume(self, instance, value):
+        self.win_sound.volume = value
     
 class FifteenPuzzleApp(App): 
     def build(self):
