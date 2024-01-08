@@ -25,7 +25,7 @@ class FifteenPuzzle(BoxLayout,):
         self.orientation = 'vertical'  
 
         with self.canvas.before:
-            Color(255, 255, 255, 1)  
+            Color(0, 255, 255, 1)  
             self.rect = Rectangle(size=self.size, pos=self.pos)
             self.bind(size=self.update_rect, pos=self.update_rect)
 
