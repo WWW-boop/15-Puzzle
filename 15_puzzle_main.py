@@ -98,7 +98,7 @@ class FifteenPuzzle(BoxLayout,):
     def create_board(self):
         for tile in self.tiles:
             if tile:  
-                button = Button(text=tile, font_size=30, on_press=self.tile_click)
+                button = Button(text=tile, font_size=40, on_press=self.tile_click,background_color=(255,255,255,1),color=(169,0,0,1))
             else:
                 button = Label(text='', font_size=30)  
             self.game_layout.add_widget(button)
@@ -180,7 +180,7 @@ class FifteenPuzzle(BoxLayout,):
         self.game_layout.clear_widgets()
         for tile in self.tiles:
             if tile:  
-                button = Button(text=tile, font_size=30, on_press=self.tile_click)
+                button = Button(text=tile, font_size=40, on_press=self.tile_click,background_color=(255,255,255,1),color=(169,0,0,1))
             else:
                 button = Label(text='', font_size=30)  
             self.game_layout.add_widget(button)
