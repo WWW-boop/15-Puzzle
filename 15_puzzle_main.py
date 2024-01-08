@@ -15,6 +15,7 @@ from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from kivy.uix.slider import Slider
 
+
 class SettingsButton(ButtonBehavior, Image):
     pass
 
@@ -25,11 +26,11 @@ class FifteenPuzzle(BoxLayout,):
         self.orientation = 'vertical'  
 
         with self.canvas.before:
-            Color(0, 255, 255, 1)  
+            Color(0, 0, 0, 1)  
             self.rect = Rectangle(size=self.size, pos=self.pos)
             self.bind(size=self.update_rect, pos=self.update_rect)
-
-        self.game_layout = GridLayout(cols=4, spacing=5)
+            
+        self.game_layout = GridLayout(cols=4, spacing=10,)
         self.add_widget(self.game_layout)
 
         self.tiles = [str(i) for i in range(1, 16)] + ['']
@@ -62,9 +63,9 @@ class FifteenPuzzle(BoxLayout,):
 
         self.button_click_count = 0
 
-
         self.pause_resume_button = Button(text='Pause', on_press=self.pause_resume_timer, size_hint=(0.1, 1))
         self.timer_layout.add_widget(self.pause_resume_button)
+
 
     def show_help_popup(self, instance):
         content = BoxLayout(orientation='vertical')
@@ -96,13 +97,12 @@ class FifteenPuzzle(BoxLayout,):
 
     def create_board(self):
         for tile in self.tiles:
-            button = Button(text=tile, font_size=30, on_press=self.tile_click)
+            if tile:  
+                button = Button(text=tile, font_size=30, on_press=self.tile_click)
+            else:
+                button = Label(text='', font_size=30)  
             self.game_layout.add_widget(button)
-    def create_board(self):
-        for tile in self.tiles:
-            button = Button(text=tile, font_size=30, on_press=self.tile_click)
-            self.game_layout.add_widget(button)
-           
+    
 
     def is_solved(self):
         return self.tiles == [str(i) for i in range(1, 16)] + ['']
@@ -179,7 +179,10 @@ class FifteenPuzzle(BoxLayout,):
     def update_buttons(self):
         self.game_layout.clear_widgets()
         for tile in self.tiles:
-            button = Button(text=tile, font_size=30, on_press=self.tile_click)
+            if tile:  
+                button = Button(text=tile, font_size=30, on_press=self.tile_click)
+            else:
+                button = Label(text='', font_size=30)  
             self.game_layout.add_widget(button)
 
     def update_timer(self, dt):
@@ -231,14 +234,6 @@ class FifteenPuzzle(BoxLayout,):
             else:
                 Clock.schedule_interval(self.update_timer, 1)
                 self.pause_resume_button.text = 'Pause'
-
-    def toggle_sound_effects(self, instance):
-        if instance.state == 'down':
-            self.music_sound.play()
-            self.win_sound.play()
-        else:
-            self.music_sound.stop()
-            self.win_sound.stop()
 
     def update_music_volume(self, instance, value):
         self.music_sound.volume = value
