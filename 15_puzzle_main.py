@@ -26,7 +26,7 @@ class FifteenPuzzle(BoxLayout,):
         self.orientation = 'vertical'  
 
         with self.canvas.before:
-            Color(0, 0, 0, 1)  
+            Color(255, 255, 255, 1)
             self.rect = Rectangle(size=self.size, pos=self.pos)
             self.bind(size=self.update_rect, pos=self.update_rect)
             
@@ -40,13 +40,13 @@ class FifteenPuzzle(BoxLayout,):
         self.timer_layout = BoxLayout(size_hint=(1, 0.1))  
         self.add_widget(self.timer_layout)
 
-        self.timer_label = Button(text="Time: 00:00", font_size=20, size_hint=(0.8, 1))
+        self.timer_label = Button(text="Time: 00:00", font_size=25, size_hint=(0.8, 1),background_color=(0,0,0,1))
         self.timer_layout.add_widget(self.timer_label)
 
         self.elapsed_time = 0
         self.game_running = False
 
-        reset_button = Button(text='Reset', on_press=self.reset_puzzle,size_hint=(0.1,1))
+        reset_button = Button(text='Reset', on_press=self.reset_puzzle,size_hint=(0.1,1),background_color=(0,0,0,1))
         self.timer_layout.add_widget(reset_button)
 
         self.music_sound = SoundLoader.load('sound\music_sound.wav')
@@ -55,17 +55,16 @@ class FifteenPuzzle(BoxLayout,):
         self.win_sound.volume = 0.4
         self.play_music_sound()
 
-        settings_button = SettingsButton(source='image\settings_icon.png', on_press=self.show_settings_popup,size_hint=(0.1, 1))
-        self.timer_layout.add_widget(settings_button)
-
-        help_button = Button(text='Help', on_press=self.show_help_popup, size_hint=(0.1, 1))
+        self.pause_resume_button = Button(text='Pause', on_press=self.pause_resume_timer, size_hint=(0.1, 1),background_color=(0,0,0,1))
+        self.timer_layout.add_widget(self.pause_resume_button)
+        
+        help_button = Button(text='Help', on_press=self.show_help_popup, size_hint=(0.1, 1),background_color=(0,0,0,1))
         self.timer_layout.add_widget(help_button)
 
         self.button_click_count = 0
 
-        self.pause_resume_button = Button(text='Pause', on_press=self.pause_resume_timer, size_hint=(0.1, 1))
-        self.timer_layout.add_widget(self.pause_resume_button)
-
+        settings_button = SettingsButton(source='image\settings_icon.png', on_press=self.show_settings_popup,size_hint=(0.1, 1))
+        self.timer_layout.add_widget(settings_button)
 
     def show_help_popup(self, instance):
         content = BoxLayout(orientation='vertical')
@@ -98,7 +97,7 @@ class FifteenPuzzle(BoxLayout,):
     def create_board(self):
         for tile in self.tiles:
             if tile:  
-                button = Button(text=tile, font_size=40, on_press=self.tile_click,background_color=(255,255,255,1),color=(169,0,0,1))
+                button = Button(text=tile, font_size=50, on_press=self.tile_click,background_color=(251,0, 0,0.8),color=(0,0,0,1))
             else:
                 button = Label(text='', font_size=30)  
             self.game_layout.add_widget(button)
@@ -180,7 +179,7 @@ class FifteenPuzzle(BoxLayout,):
         self.game_layout.clear_widgets()
         for tile in self.tiles:
             if tile:  
-                button = Button(text=tile, font_size=40, on_press=self.tile_click,background_color=(255,255,255,1),color=(169,0,0,1))
+                button = Button(text=tile, font_size=50, on_press=self.tile_click,background_color=(251,0, 0,0.8),color=(0,0,0,1))
             else:
                 button = Label(text='', font_size=30)  
             self.game_layout.add_widget(button)
