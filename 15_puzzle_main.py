@@ -46,7 +46,7 @@ class FifteenPuzzle(BoxLayout,):
         self.elapsed_time = 0
         self.game_running = False
 
-        reset_button = Button(text='Reset', on_press=self.reset_puzzle,size_hint=(0.1,1),background_color=(0,0,0,1))
+        reset_button = Button(text='Reset', on_press=self.reset_puzzle,size_hint=(0.3,1),background_color=(0,0,0,1))
         self.timer_layout.add_widget(reset_button)
 
         self.music_sound = SoundLoader.load('sound\music_sound.wav')
