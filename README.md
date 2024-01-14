@@ -16,7 +16,7 @@ The 15-Puzzle is a sliding puzzle that consists of a frame of numbered square ti
 
 ## Screenshots
 
-![IMG_8072_Original](https://im4.ezgif.com/tmp/ezgif-4-7af37a2298.gif)
+![IMG_8072_Original](https://imagetolink.com/ib/znB22QOwtQ.png)
 
 
 
